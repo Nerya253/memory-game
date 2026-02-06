@@ -1,0 +1,27 @@
+name: Deploy Memory Game
+
+# מתי זה ירוץ? בכל פעם שאתה עושה push לענף main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }} # ה-IP שהגדרנו (151.145...)
+          username: ${{ secrets.SSH_USER }} # המשתמש (ubuntu)
+          key: ${{ secrets.SSH_KEY }} # המפתח הפרטי (הארוך)
+          script: |
+            # כניסה לתיקייה
+            cd ~/memory-game
+
+            # משיכת הקוד החדש
+            git pull origin main
+
+            # בנייה והרמה מחדש
+            docker compose up -d --build
