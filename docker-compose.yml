@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  memory-game:
+    build: .
+    container_name: memory-game
+    restart: always
+    # בחר פורט חיצוני פנוי (למשל 8090)
+    ports:
+      - '8090:80'
